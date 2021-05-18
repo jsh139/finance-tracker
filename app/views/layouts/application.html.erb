@@ -11,13 +11,10 @@
   </head>
 
   <body>
-    <div class="ui small inverted menu">
-      <div class="ui container">
-        <%= render 'layouts/navigation' %>
-      </div>
+    <%= render 'layouts/navigation' %>
+    <div class="container">
+      <%= render 'layouts/messages' %>
+      <%= yield %>
     </div>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
   </body>
 </html>
