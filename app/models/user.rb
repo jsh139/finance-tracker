@@ -29,4 +29,40 @@ class User < ApplicationRecord
 
     'Anonymous'
   end
+
+  def self.search(search_string)
+    search_string.strip!
+
+    to_return = (find_friends_by_first_name(search_string) +
+                find_friends_by_last_name(search_string) +
+                find_friends_by_email(search_string)).uniq
+
+    return nil unless to_return
+
+    to_return
+  end
+
+  def self.matches(field_name, search_string)
+    where("#{field_name} like ?", "%#{search_string}%")
+  end
+
+  def self.find_friends_by_first_name(search_string)
+    matches('first_name', search_string)
+  end
+
+  def self.find_friends_by_last_name(search_string)
+    matches('last_name', search_string)
+  end
+
+  def self.find_friends_by_email(search_string)
+    matches('email', search_string)
+  end
+
+  def except_current_user(users)
+    users.reject { |user| user.id == self.id }
+  end
+
+  def user_is_following_friend?(friend_id)
+    friends.where(id: friend_id).exists?
+  end
 end
